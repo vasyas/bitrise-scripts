@@ -10,11 +10,14 @@
 # (otherwise the defaults below will be used).
 # * MYSQL_VERSION
 # * MYSQL_PORT
-#
+
+# MySQL will be accesible by user root with no password, ie:
+# mysql -h 127.0.0.1 -P 3307 -u root -e "select 1"
+
 MYSQL_VERSION=${MYSQL_VERSION:="5.7.17"}
 MYSQL_PORT=${MYSQL_PORT:="3307"}
 
-set -e
+set -xue
 MYSQL_DIR=${MYSQL_DIR:=$HOME/mysql-$MYSQL_VERSION}
 CACHED_DOWNLOAD="${HOME}/cache/mysql-${MYSQL_VERSION}-macos10.12-x86_64.tar.gz"
 
@@ -82,5 +85,4 @@ key_buffer		= 16M
   sleep 10
 )
 
-"${MYSQL_DIR}/bin/mysql" --defaults-file="${MYSQL_DIR}/my.cnf" -u "${MYSQL_USER}" -e "SET PASSWORD FOR root@'localhost' = PASSWORD('${MYSQL_PASSWORD}');"
 "${MYSQL_DIR}/bin/mysql" --defaults-file="${MYSQL_DIR}/my.cnf" --version | grep "${MYSQL_VERSION}"
